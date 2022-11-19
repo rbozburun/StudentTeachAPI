@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  postgrsql_db:
+    image: postgres:14
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=youtube_student_api
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  
+  app:
+    container_name: api
+    build: .
+    ports:
+      - "4545:4545"
+    restart: on-failure
+    depends_on:
+      - postgrsql_db
+    links: 
+      - postgrsql_db
