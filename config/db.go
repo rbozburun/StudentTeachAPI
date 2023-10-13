@@ -11,8 +11,12 @@ import (
 
 var DB *gorm.DB
 
+func GetDB() *gorm.DB {
+	return DB
+}
+
 func Connect() {
-	db, err := gorm.Open(postgres.Open("postgres://postgres:postgres@postgrsql_db/youtube_student_api?sslmode=disable"), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open("postgres://postgres:postgres@localhost/youtube_student_api?sslmode=disable"), &gorm.Config{})
 
 	if err != nil {
 		panic(err)
